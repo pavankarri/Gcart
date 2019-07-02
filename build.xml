@@ -1,38 +1,44 @@
-<project name="GCART" default="dist" basedir=".">
-  <description>
-    Gcart build file
-  </description>
-  <!-- set global properties for this build -->
-  <property name="src" location="src"/>
-  <property name="build" location="build"/>
-  <property name="dist" location="dist"/>
+<project name="Gcart" default="war" basedir=".">
+    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
+         classpath="WebContent/WEB-INF/lib/checkstyle-7.8.2-all.jar"/>
+	<path id="compile.classpath">
+        <fileset dir="WebContent/WEB-INF/lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+    <target name="init">
+        <mkdir dir="build/classes"/>
+        <mkdir dir="dist"/>
+    </target>
+    <target name="compile" depends="init">
+        <javac srcdir="src" debug="true" destdir="build/classes">
+            <classpath refid="compile.classpath"/>
+        </javac>
+    </target>
+    <target name="checkstyle">
+        <checkstyle config="sun_checks.xml" failOnViolation="false"> 
+            <fileset dir="src/example" includes="**/*.java"/>
+            <formatter type="xml" toFile="checkstyle_errors.xml"/>
+        </checkstyle>
+    </target>
+    <target name="junit" depends="compile">
+        <junit printsummary="yes" haltonfailure="yes">
+              <classpath>
+                <pathelement location="build/classes"/>
+                <pathelement path="WebContent/WEB-INF/lib/junit.jar"/>
+                <pathelement path="WebContent/WEB-INF/lib/org.hamcrest.core_1.3.0.v201303031735.jar"/>
+              </classpath>
+              <test name="junit.TestCalculator" haltonfailure="no" outfile="TestCalculator_JUnitResult">
+                <formatter type="xml"/>
+              </test>
+        </junit>
+    </target>
+	<target name="war" depends="compile">
+        <war destfile="dest/Gcart.war" webxml="WebContent/WEB-INF/web.xml">
+            <fileset dir="WebContent"/>
+            <lib dir="WebContent/WEB-INF/lib"/>
+            <classes dir="build/classes"/>
+        </war>
+    </target>
 
-  <target name="init">
-    <!-- Create the time stamp -->
-    <tstamp/>
-    <!-- Create the build directory structure used by compile -->
-    <mkdir dir="${build}"/>
-  </target>
-
-  <target name="compile" depends="init"
-        description="compile the source">
-    <!-- Compile the Java code from ${src} into ${build} -->
-    <javac srcdir="${src}" destdir="${build}"/>
-  </target>
-
-  <target name="dist" depends="compile"
-        description="generate the distribution">
-    <!-- Create the distribution directory -->
-    <mkdir dir="${dist}/lib"/>
-
-    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-    <jar jarfile="${dist}/lib/Gcart-${DSTAMP}.jar" basedir="${build}"/>
-  </target>
-
-  <target name="clean"
-        description="clean up">
-    <!-- Delete the ${build} and ${dist} directory trees -->
-    <delete dir="${build}"/>
-    <delete dir="${dist}"/>
-  </target>
 </project>
