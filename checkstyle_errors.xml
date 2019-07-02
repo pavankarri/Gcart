@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="7.8.2">
+<file name="C:\Program Files (x86)\Jenkins\workspace\Gcart\server">
+<error line="0" severity="error" message="Missing package-info.java file." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocPackageCheck"/>
+<error line="3" severity="error" message="Using the &apos;.*&apos; form of import should be avoided - org.junit.Assert.*." source="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck"/>
+</file>
+<file name="C:\Program Files (x86)\Jenkins\workspace\Gcart\server">
+</file>
+<file name="C:\Program Files (x86)\Jenkins\workspace\Gcart\server">
+</file>
+</checkstyle>
